@@ -54,7 +54,7 @@ public class ConvertidorPosfijo {
 		for(int i = 0; i < expresionPre.length()-1; i++){
 			act = expresionPre.charAt(i);
 			act1 = expresionPre.charAt(i+1);
-			if((act != '+' && act != '*' && act != ',' && act != '(') && (act1 != '+' && act1 != '*' && act1 != ',' && act1 != ')')){
+			if((act != ',' && act != '(') && (act1 != '+' && act1 != '*' && act1 != ',' && act1 != ')')){
 				expresion = expresion + act + '#';
 			}
 			else{
@@ -73,8 +73,9 @@ public class ConvertidorPosfijo {
 		for(int i = 0; i < expresion.length();i++){
 			simbolo = expresion.charAt(i);
 			
-			if(simbolo == '+'|| simbolo == '*' || simbolo == '(' || simbolo == ')' || simbolo == ',' || simbolo == '#'){ //Revisa que el simbolo sea un operador
+			if(/*simbolo == '+'|| simbolo == '*' ||*/ simbolo == '(' || simbolo == ')' || simbolo == ',' || simbolo == '#'){ //Revisa que el simbolo sea un operador
 				if(this.pila.isEmpty() || ( simbolo == '(' || (this.prioridadOperador(simbolo) > this.prioridadOperador(this.pila.top()) )) ){ //Si la pila esta vacia o el operador actual tiene mayor prioridad que el top de la pila actual automaticamente agrega el operador
+					
 					this.pila.push(simbolo);
 				}
 				else if(simbolo == ')'){
@@ -96,7 +97,7 @@ public class ConvertidorPosfijo {
 					this.pila.push(simbolo);
 				}	
 			}
-			else if(Character.isAlphabetic(simbolo) || simbolo == '\n' || simbolo == ' ' || Character.isDigit(simbolo) || simbolo == '.'){ //Agrega el operando a la expresion final
+			else if(Character.isAlphabetic(simbolo) || simbolo == '\n' || simbolo == ' ' || Character.isDigit(simbolo) || simbolo == '.' || simbolo == '+'|| simbolo == '*'){ //Agrega el operando a la expresion final
 				posfijo = posfijo + simbolo;
 			}
 			else{
