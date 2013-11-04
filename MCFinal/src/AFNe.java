@@ -11,11 +11,11 @@ public class AFNe {
 	
 	int inicial = 0;
 	
-	Vector<Vector<Vector<Integer>>> automata;
+	Vector<Vector<Vector<Integer>>> automata; //Orden: Estados - SimboloEntrada - EstadosPosibles
 	
 	public AFNe(String posfijo){
 		
-		this.automata = Vector<Vector<Vector<Integer>>>;
+		this.automata = new Vector<Vector<Vector<Integer>>>();
 		
 		this.convertir(posfijo);
 	}
@@ -32,6 +32,28 @@ public class AFNe {
 		
 	}
 	
+	public boolean esOperador(char simbolo){
+		
+		if(simbolo == '+' || simbolo == '*' || simbolo == ',' ||simbolo == '#'){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+	}
+	
+	public Vector<Vector<Integer>> crearEstados(){
+		Vector<Vector<Integer>> vEstados = new Vector<Vector<Integer>>();
+		Vector<Integer> estadosInit = new Vector<Integer>();
+		
+		for(int i = 0; i < lenguaje.length;i++){
+			vEstados.add(estadosInit);
+		}
+		
+		return vEstados;
+	}
+	
 	public void convertir(String posfijo){
 		int nEstado, inicial1, inicial2, final1, final2;
 		nEstado = 0;
@@ -39,6 +61,28 @@ public class AFNe {
 		
 		for(int i = 0;i < posfijo.length(); i++){//Recorre los simbolos de la expresion posfija
 			//Aqui adentro va toda la creacion del AFN
+			simbolo = posfijo.charAt(i);
+			
+			if(!this.esOperador(simbolo)){
+				this.automata.add(crearEstados());
+				inicial1 = nEstado;
+				this.automata.add(crearEstados());
+				final1 = nEstado+1;
+			}
+			else{
+				if(simbolo == ','){
+					
+				}
+				else if(simbolo == '#'){
+					
+				}
+				else if(simbolo == '+'){
+					
+				}
+				else{
+					
+				}
+			}
 		}
 		
 	}
