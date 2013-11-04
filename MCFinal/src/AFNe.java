@@ -28,9 +28,7 @@ public class AFNe {
 				return i;
 			}
 		}
-		
 		return -1;
-		
 	}
 	
 	public boolean esOperador(char simbolo){
@@ -60,10 +58,10 @@ public class AFNe {
 		nEstado = inicial1 = inicial2 = final1 = final2 = 0;
 		char simbolo=' ';
 		
-		this.automata.add(crearEstados()); //Solo aplica para el primer caracter de la expresion
-		inicial1 = nEstado;
+		this.automata.add(crearEstados()); //Solo aplica para el primer caracter de la expresion, creando el automata R, que se sobreescribe en las operaciones binarias
+		inicial1 = inicial2 = nEstado;
 		this.automata.add(crearEstados());
-		final1 = nEstado+1;
+		final1 = final2 = nEstado+1;
 		this.automata.elementAt(nEstado).elementAt(posCaracter(simbolo)).add((Integer)nEstado+1);
 		nEstado = nEstado + 2;
 		
@@ -71,7 +69,7 @@ public class AFNe {
 			//Aqui adentro va toda la creacion del AFN
 			simbolo = posfijo.charAt(i);
 			
-			if(!this.esOperador(simbolo)){
+			if(!this.esOperador(simbolo)){ //Cada caracter nuevo crea un nuevo automata 'S'.
 				this.automata.add(crearEstados());
 				inicial2 = nEstado;
 				this.automata.add(crearEstados());
@@ -109,11 +107,10 @@ public class AFNe {
 					final2 = nEstado+1;
 					nEstado = nEstado + 2;
 				}
-				else{
+				else{ //Cerradura positiva
 					this.automata.add(crearEstados());
 					this.automata.add(crearEstados());
 					this.automata.elementAt(nEstado).elementAt(0).add((Integer)inicial2);
-					this.automata.elementAt(nEstado).elementAt(0).add((Integer)nEstado+1);
 					this.automata.elementAt(final2).elementAt(0).add((Integer)nEstado+1);
 					inicial2 = nEstado;
 					final2 = nEstado+1;
