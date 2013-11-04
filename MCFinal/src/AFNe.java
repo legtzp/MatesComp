@@ -9,14 +9,37 @@ public class AFNe {
 			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z',
 			'á','é','í','ó','ú','Á','É','Í','Ó','Ú'};
 	
-	Vector<Vector<String>> automata;
+	int inicial = 0;
+	
+	Vector<Vector<Vector<Integer>>> automata;
 	
 	public AFNe(String posfijo){
+		
+		this.automata = Vector<Vector<Vector<Integer>>>;
+		
 		this.convertir(posfijo);
+	}
+	
+	public int posEstado(char simbolo){
+		
+		for(int i = 0; i < lenguaje.length; i++){
+			if(lenguaje[i]==simbolo){
+				return i;
+			}
+		}
+		
+		return -1;
+		
 	}
 	
 	public void convertir(String posfijo){
 		int nEstado, inicial1, inicial2, final1, final2;
+		nEstado = 0;
+		char simbolo=' ';
+		
+		for(int i = 0;i < posfijo.length(); i++){//Recorre los simbolos de la expresion posfija
+			//Aqui adentro va toda la creacion del AFN
+		}
 		
 	}
 
