@@ -50,9 +50,7 @@ public class ConvertidorPosfijo {
 	
 	
 	public String convertir(String expresionPre) throws ExpresionPosfijaException{
-		
-		System.out.println(expresionPre);
-		
+				
 		String expresion = ""; //Agrega simbolos de concatenacion a la expresion
 		char act, act1;
 		for(int i = 0; i < expresionPre.length()-1; i++){

@@ -48,10 +48,9 @@ public class AFNe {
 	
 	public Vector<Vector<Integer>> crearEstados(){
 		Vector<Vector<Integer>> vEstados = new Vector<Vector<Integer>>();
-		Vector<Integer> estadosInit = new Vector<Integer>();
 		
 		for(int i = 0; i < lenguaje.length;i++){
-			vEstados.add(estadosInit);
+			vEstados.add(new Vector<Integer>());
 		}
 		
 		return vEstados;
@@ -65,8 +64,18 @@ public class AFNe {
 		this.automata.add(crearEstados()); //Solo aplica para el primer caracter de la expresion, creando el automata R, que se sobreescribe en las operaciones binarias
 		inicial1 = inicial2 = nEstado;
 		this.automata.add(crearEstados());
-		final1 = final2 = nEstado+1;
-		this.automata.elementAt(nEstado).elementAt(posCaracter(simbolo)).add((Integer)nEstado+1);
+		this.estadoFinal = final1 = final2 = nEstado+1;
+		
+		if(simbolo == '.'){
+			for(int k = 1; k < lenguaje.length; k++){
+				this.automata.elementAt(nEstado).elementAt(k).add((Integer)nEstado+1);
+			}
+		}
+		else{
+			this.automata.elementAt(nEstado).elementAt(posCaracter(simbolo)).add((Integer)nEstado+1);
+		}
+		
+		System.out.println(this.automata.elementAt(nEstado).elementAt(posCaracter(simbolo)));
 		nEstado = nEstado + 2;
 		
 		for(int i = 1;i < posfijo.length(); i++){//Recorre los simbolos de la expresion posfija
@@ -75,21 +84,24 @@ public class AFNe {
 			
 			if(!this.esOperador(simbolo)){ //Cada caracter nuevo crea un nuevo automata 'S'.
 				
-				
 				this.automata.add(crearEstados());
 				inicial2 = nEstado;
 				this.automata.add(crearEstados());
 				final2 = nEstado+1;
 				
 				System.out.println(posCaracter(simbolo) + " "+simbolo);
+				
 				if(simbolo == '.'){
-					for(int k = 1; i < lenguaje.length; i++){
+					for(int k = 1; k < lenguaje.length; k++){
 						this.automata.elementAt(nEstado).elementAt(k).add((Integer)nEstado+1);
 					}
-				}else{
-					this.automata.elementAt(nEstado).elementAt(posCaracter(simbolo)).add((Integer)nEstado+1);
 				}
-				
+				else{
+					System.out.println(this.automata.elementAt(nEstado));
+					System.out.println("simbolo "+simbolo+" posicion "+posCaracter(simbolo));
+					this.automata.elementAt(nEstado).elementAt(posCaracter(simbolo)).add((Integer)nEstado+1);
+					System.out.println(this.automata.elementAt(nEstado));
+				}
 				
 				nEstado = nEstado + 2;
 			}
@@ -115,6 +127,8 @@ public class AFNe {
 					inicial2 = inicial1;
 					final1 = final2;
 					this.estadoFinal = final1;
+					
+					
 				}
 				else if(simbolo == '*'){ //Cerradura Estrella
 					this.automata.add(crearEstados());
@@ -146,7 +160,8 @@ public class AFNe {
 			for(int j = 0; j < automata.elementAt(i).size(); j++){
 				for(int k = 0; k < automata.elementAt(i).elementAt(j).size(); k++){
 					if(automata.elementAt(i).elementAt(j).size() > 0){
-						System.out.print("estado: "+i+" simbolo : "+ this.caracterAt(j)+ " estado: " +automata.elementAt(i).elementAt(j).elementAt(k)+" ");
+						System.out.print("estado: "+i+" simbolo : "+ this.caracterAt(j)+ " estados:  ");
+						System.out.print(this.automata.elementAt(i).elementAt(j));
 					}
 					System.out.println();
 				}
@@ -158,7 +173,7 @@ public class AFNe {
 	
 	public static void main(String[] args) throws Exception{
 		ConvertidorPosfijo posfijo = new ConvertidorPosfijo();
-		AFNe automata = new AFNe(posfijo.convertir("(padre,ε)wwwcom"));
+		AFNe automata = new AFNe(posfijo.convertir("po"));
 		automata.imprimirAFNe();
 
 	}
