@@ -75,7 +75,6 @@ public class AFNe {
 			this.automata.elementAt(nEstado).elementAt(posCaracter(simbolo)).add((Integer)nEstado+1);
 		}
 		
-		System.out.println(this.automata.elementAt(nEstado).elementAt(posCaracter(simbolo)));
 		nEstado = nEstado + 2;
 		
 		for(int i = 1;i < posfijo.length(); i++){//Recorre los simbolos de la expresion posfija
@@ -89,18 +88,13 @@ public class AFNe {
 				this.automata.add(crearEstados());
 				final2 = nEstado+1;
 				
-				System.out.println(posCaracter(simbolo) + " "+simbolo);
-				
 				if(simbolo == '.'){
 					for(int k = 1; k < lenguaje.length; k++){
 						this.automata.elementAt(nEstado).elementAt(k).add((Integer)nEstado+1);
 					}
 				}
 				else{
-					System.out.println(this.automata.elementAt(nEstado));
-					System.out.println("simbolo "+simbolo+" posicion "+posCaracter(simbolo));
 					this.automata.elementAt(nEstado).elementAt(posCaracter(simbolo)).add((Integer)nEstado+1);
-					System.out.println(this.automata.elementAt(nEstado));
 				}
 				
 				nEstado = nEstado + 2;
@@ -156,8 +150,13 @@ public class AFNe {
 
 	public void imprimirAFNe(){
 		
+		System.out.println("Numero de Estados: "+automata.size());
+		System.out.println("Estado inicial: q"+this.inicial+" Estado Final: q"+this.estadoFinal);
+		
 		for(int i = 0; i < automata.size(); i++){
+			System.out.println("Estado q"+i);
 			for(int j = 0; j < automata.elementAt(i).size(); j++){
+				
 				for(int k = 0; k < automata.elementAt(i).elementAt(j).size(); k++){
 					if(automata.elementAt(i).elementAt(j).size() > 0){
 						System.out.print("estado: "+i+" simbolo : "+ this.caracterAt(j)+ " estados:  ");
@@ -173,7 +172,7 @@ public class AFNe {
 	
 	public static void main(String[] args) throws Exception{
 		ConvertidorPosfijo posfijo = new ConvertidorPosfijo();
-		AFNe automata = new AFNe(posfijo.convertir("po"));
+		AFNe automata = new AFNe(posfijo.convertir("(padre,ε)(.)+www(.)+com"));
 		automata.imprimirAFNe();
 
 	}
