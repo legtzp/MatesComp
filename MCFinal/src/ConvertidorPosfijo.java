@@ -21,6 +21,10 @@ public class ConvertidorPosfijo {
 		System.out.println(this.convertir(expresion));
 	}
 	
+	public ConvertidorPosfijo() throws ExpresionPosfijaException{
+		this.pila = new StackLE<Character>();
+	}
+	
 	public StackLE getPila(){
 		return this.pila;
 	}
@@ -45,7 +49,7 @@ public class ConvertidorPosfijo {
 	}
 	
 	
-	private String convertir(String expresionPre) throws ExpresionPosfijaException{
+	public String convertir(String expresionPre) throws ExpresionPosfijaException{
 		
 		System.out.println(expresionPre);
 		

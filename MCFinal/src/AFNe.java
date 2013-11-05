@@ -10,9 +10,9 @@ public class AFNe {
 			'á','é','í','ó','ú','Á','É','Í','Ó','Ú'};
 	
 	int inicial;
+	int estadoFinal;
 	
 	Vector<Vector<Vector<Integer>>> automata; //Orden: Estados - SimboloEntrada - EstadosPosibles
-	Vector<Integer> finales; //Guarda los estados finales aceptados por el AFN
 	
 	public AFNe(String posfijo){
 		
@@ -90,12 +90,17 @@ public class AFNe {
 					
 					inicial1 = nEstado;
 					this.inicial = inicial1;
+					inicial2 = inicial1;
 					final1 = nEstado + 1;
+					this.estadoFinal = final1;
+					final2 = final1;
 					nEstado = nEstado + 2;
 				}
 				else if(simbolo == '#'){ //Concatenacion
 					this.automata.elementAt(final1).elementAt(0).add((Integer)inicial2);
+					inicial2 = inicial1;
 					final1 = final2;
+					this.estadoFinal = final1;
 				}
 				else if(simbolo == '*'){ //Cerradura Estrella
 					this.automata.add(crearEstados());
@@ -121,4 +126,23 @@ public class AFNe {
 		
 	}
 
+	public void imprimirAFNe(){
+		
+		for(int i = 0; i < automata.size(); i++){
+			for(int j = 0; j < automata.elementAt(i).size(); j++){
+				for(int k = 0; k < automata.elementAt(i).elementAt(j).size(); k++){
+					System.out.print(automata.elementAt(i).elementAt(j).elementAt(k)+" ");
+				}
+				System.out.println();
+			}
+		}
+		
+	}
+	
+	public static void main(String[] args) throws Exception{
+		ConvertidorPosfijo posfijo = new ConvertidorPosfijo();
+		AFNe automata = new AFNe(posfijo.convertir("(padre,ε)(.)+www(.)+com"));
+		//automata.imprimirAFNe();
+
+	}
 }
