@@ -21,7 +21,7 @@ public class AFNe {
 		this.convertir(posfijo);
 	}
 	
-	public int posCaracter(char simbolo){
+	private int posCaracter(char simbolo){
 		
 		for(int i = 0; i < lenguaje.length; i++){
 			if(lenguaje[i]==simbolo){
@@ -31,11 +31,11 @@ public class AFNe {
 		return -1;
 	}
 	
-	public char caracterAt(int pos){
+	private char caracterAt(int pos){
 		return this.lenguaje[pos];
 	}
 	
-	public boolean esOperador(char simbolo){
+	private boolean esOperador(char simbolo){
 		
 		if(simbolo == '+' || simbolo == '*' || simbolo == ',' ||simbolo == '#'){
 			return true;
@@ -46,7 +46,7 @@ public class AFNe {
 		
 	}
 	
-	public Vector<Vector<Integer>> crearEstados(){
+	private Vector<Vector<Integer>> crearEstados(){
 		Vector<Vector<Integer>> vEstados = new Vector<Vector<Integer>>();
 		
 		for(int i = 0; i < lenguaje.length;i++){
@@ -168,6 +168,18 @@ public class AFNe {
 			}
 		}
 		
+	}
+
+	public int getInicial(){
+		return this.inicial;
+	}
+	
+	public int getFinal(){
+		return this.estadoFinal;
+	}
+	
+	public Vector<Vector<Vector<Integer>>> getAutomata(){
+		return this.automata;
 	}
 	
 	public static void main(String[] args) throws Exception{
