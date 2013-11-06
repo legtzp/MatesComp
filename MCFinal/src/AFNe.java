@@ -59,7 +59,7 @@ public class AFNe {
 	public void convertir(String posfijo){
 		int nEstado, inicial1, inicial2, final1, final2;
 		nEstado = inicial1 = inicial2 = final1 = final2 = 0;
-		char simbolo=' ';
+		char simbolo=posfijo.charAt(0);
 		
 		this.automata.add(crearEstados()); //Solo aplica para el primer caracter de la expresion, creando el automata R, que se sobreescribe en las operaciones binarias
 		inicial1 = inicial2 = nEstado;
@@ -154,12 +154,12 @@ public class AFNe {
 		System.out.println("Estado inicial: q"+this.inicial+" Estado Final: q"+this.estadoFinal);
 		
 		for(int i = 0; i < automata.size(); i++){
-			System.out.println("Estado q"+i);
+			System.out.print("Estado q"+i+" ");
 			for(int j = 0; j < automata.elementAt(i).size(); j++){
 				
 				for(int k = 0; k < automata.elementAt(i).elementAt(j).size(); k++){
 					if(automata.elementAt(i).elementAt(j).size() > 0){
-						System.out.print("estado: "+i+" simbolo : "+ this.caracterAt(j)+ " estados:  ");
+						System.out.print("simbolo : "+ this.caracterAt(j)+ " estados:  ");
 						System.out.print(this.automata.elementAt(i).elementAt(j));
 					}
 					System.out.println();
@@ -184,7 +184,7 @@ public class AFNe {
 	
 	public static void main(String[] args) throws Exception{
 		ConvertidorPosfijo posfijo = new ConvertidorPosfijo();
-		AFNe automata = new AFNe(posfijo.convertir("(padre,ε)(.)+www(.)+com"));
+		AFNe automata = new AFNe(posfijo.convertir("p"));
 		automata.imprimirAFNe();
 
 	}
