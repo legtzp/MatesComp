@@ -21,7 +21,7 @@ public class AFNe {
 		this.convertir(posfijo);
 	}
 	
-	private int posCaracter(char simbolo){
+	private int posCaracter(char simbolo){ //Obtiene la posicion del caracter en el alfabeto
 		
 		for(int i = 0; i < lenguaje.length; i++){
 			if(lenguaje[i]==simbolo){
@@ -46,7 +46,7 @@ public class AFNe {
 		
 	}
 	
-	private Vector<Vector<Integer>> crearEstados(){
+	private Vector<Vector<Integer>> crearEstados(){ //Cada que se crea un estado, incializa un espacio para guardar la transiciones por caracter
 		Vector<Vector<Integer>> vEstados = new Vector<Vector<Integer>>();
 		
 		for(int i = 0; i < lenguaje.length;i++){
@@ -56,7 +56,7 @@ public class AFNe {
 		return vEstados;
 	}
 	
-	public void convertir(String posfijo){
+	public void convertir(String posfijo){ //Convierte el posfijo a AFNe
 		int nEstado, inicial1, inicial2, final1, final2;
 		nEstado = inicial1 = inicial2 = final1 = final2 = 0;
 		char simbolo=posfijo.charAt(0);
@@ -170,6 +170,8 @@ public class AFNe {
 		
 	}
 
+	
+	//getters
 	public int getInicial(){
 		return this.inicial;
 	}
@@ -184,7 +186,7 @@ public class AFNe {
 	
 	public static void main(String[] args) throws Exception{
 		ConvertidorPosfijo posfijo = new ConvertidorPosfijo();
-		AFNe automata = new AFNe(posfijo.convertir("p"));
+		AFNe automata = new AFNe(posfijo.convertir("(01)*(ε,0)+(10)*(ε,1)"));
 		automata.imprimirAFNe();
 
 	}
