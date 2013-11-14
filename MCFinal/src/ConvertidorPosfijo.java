@@ -2,31 +2,24 @@
 public class ConvertidorPosfijo {
 
 	private StackLE<Character> pila;
-	
-	/*
-	 -constructor(String exp) que imprime en pantalla la solucion
-	 -parsing()
-	 -evalua()
-	 */
-	
-	/*Excepciones
-	 -Encontrar caracter que ni al caso
-	 -Al vaciar la pila encontraste un parentesis que no cerro
-	 -Si encuentras un parentesis que cierra y no encuentras el que abrio
-	  
-	 */
+	private String posfijo;
 	
 	public ConvertidorPosfijo(String expresion) throws ExpresionPosfijaException{
 		this.pila = new StackLE<Character>();
-		System.out.println(this.convertir(expresion));
+		this.posfijo = this.convertir(expresion);
 	}
 	
 	public ConvertidorPosfijo() throws ExpresionPosfijaException{
 		this.pila = new StackLE<Character>();
+		this.posfijo = "";
 	}
 	
 	public StackLE getPila(){
 		return this.pila;
+	}
+	
+	public String getPosfijo(){
+		return this.posfijo;
 	}
 	
 	private int prioridadOperador(char operador){
@@ -119,7 +112,8 @@ public class ConvertidorPosfijo {
 	
 	public static void main(String[] args) throws ExpresionPosfijaException {
 		
-		ConvertidorPosfijo convertir = new ConvertidorPosfijo("(padre,ε)(.)+www(.)+com");
+		ConvertidorPosfijo convertir = new ConvertidorPosfijo("(arbol,casa)");
+		System.out.println(convertir.getPosfijo());
 
 	}
 
