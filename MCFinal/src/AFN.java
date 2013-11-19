@@ -253,13 +253,13 @@ public class AFN {
 		
 		
 		try {
-			ConvertidorPosfijo convertidor = new ConvertidorPosfijo("(arbol,casa)+gato");
+			ConvertidorPosfijo convertidor = new ConvertidorPosfijo("(.)*");
 			AFNe afne = new AFNe(convertidor.getPosfijo());
 			afne.imprimirAFNe();
 			
 			AFN afn = new AFN(afne);
 			afn.imprimirAFN();
-			System.out.println(afn.aceptado(afn.resolverCadena("gato", 0)));
+			System.out.println(afn.aceptado(afn.resolverCadena("gatote come perro", 0)));
 			
 			
 			
