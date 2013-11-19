@@ -22,15 +22,13 @@ public class modulo4 {
 		
 		String linea, sublinea;
 		BufferedReader lector =  new BufferedReader(new FileReader(archivo));
-		int counter = 1;
 		
 		while((linea = lector.readLine()) != null){ //Lee cada linea individual
-			System.out.println(counter);
 			for(int i = 0; i < linea.length();i++){ //Crea todas las subcadenas posibles de la linea y prueba si son aceptadas por el automata
 				for(int j = 0; j <= linea.length(); j++){
 					if(i<j){
 						sublinea = linea.substring(i, j);
-						System.out.println("i: "+i+" j: "+j+" ->"+sublinea);
+						//System.out.println("i: "+i+" j: "+j+" ->"+sublinea);
 						if(automata.aceptado(automata.resolverCadena(sublinea, 0))){
 							this.cadenasAceptadas.add(sublinea);
 						}
@@ -39,9 +37,9 @@ public class modulo4 {
 				}
 				
 			}
-			counter++;
 		}
 		
+		lector.close();
 	}
 	
 	
@@ -50,6 +48,7 @@ public class modulo4 {
 		String string = "";
 		System.out.println(this.cadenasAceptadas);
 		for(int i = 0; i < this.cadenasAceptadas.size(); i++){
+			System.out.println(this.cadenasAceptadas.elementAt(i));
 			string.concat(this.cadenasAceptadas.elementAt(i)+"\n");
 		}
 		
@@ -59,11 +58,12 @@ public class modulo4 {
 	
 	public static void main(String[] args) throws ExpresionPosfijaException, IOException{
 		
-		ConvertidorPosfijo posfijo = new ConvertidorPosfijo("g(.)*perro");
+		ConvertidorPosfijo posfijo = new ConvertidorPosfijo("(.)*César(.)*");
 		AFNe afne = new AFNe(posfijo.getPosfijo());
 		AFN afn = new AFN(afne);
 		
-		modulo4 prueba = new modulo4(afn,"prueba1.txt");
+		//afn.imprimirAFN();
+		modulo4 prueba = new modulo4(afn,"prueba2.txt");
 		System.out.println(prueba);
 		
 	}
