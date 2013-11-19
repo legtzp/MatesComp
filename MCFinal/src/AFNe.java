@@ -310,7 +310,7 @@ public class AFNe {
 	}
 	
 	public static void main(String[] args) throws Exception{
-		ConvertidorPosfijo posfijo = new ConvertidorPosfijo("(arbol,casa)");
+		ConvertidorPosfijo posfijo = new ConvertidorPosfijo("a+");
 		AFNe automata = new AFNe(posfijo.getPosfijo());
 		System.out.println(posfijo.getPosfijo());
 		automata.imprimirAFNe();

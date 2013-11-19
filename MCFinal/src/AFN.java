@@ -6,7 +6,7 @@ import java.util.Vector;
 public class AFN {
 	
 	char lenguaje[] = {'ε',' ','\n',
-			'0','1','2','3','4','5','6','7','8','8',
+			'0','1','2','3','4','5','6','7','8','9',
 			'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z',
 			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z',
 			'á','é','í','ó','ú','Á','É','Í','Ó','Ú'};
@@ -20,22 +20,19 @@ public class AFN {
 	Vector<Character> alfabetoTmp;
 	char[] alfabeto;
 
-	public AFN(AFNeOLD afne){
+	public AFN(AFNe afne){
 		this.estadostmp = new Vector<Vector<Integer>>();
 		this.automata = new Vector<Integer[]>();
+		this.estadoFinal = afne.getFinal();
 		this.addEstado(this.calcularEdo0(afne));
 		calcularTabla(afne);
-		//depurarAutomata();
+		depurarAutomata();
 	}
 	
 	public void imprimirAutomata(){
 		for(int i=0; i<this.automata.size(); i++){
 			for(int j=0; j<this.lenguaje.length;j++){
-				
-				if(this.automata.elementAt(i)[j] != -1){
-					System.out.println("Estado "+i+"["+this.lenguaje[j]+"] = "+this.automata.elementAt(i)[j]);
-				}
-				
+				System.out.println("Estado "+i+"["+this.lenguaje[j]+"] = "+this.automata.elementAt(i)[j]);
 			}
 		}
 	}
@@ -49,7 +46,8 @@ public class AFN {
 		for(int i=0; i<this.AFN.length;i++){
 			System.out.print("["+i+"]");
 			for (int j = 0; j < this.AFN[0].length; j++) {
-				System.out.print("["+this.AFN[i][j]+"]");
+				if(this.AFN[i][j] == -1) System.out.print("[ ]");
+				else System.out.print("["+this.AFN[i][j]+"]");
 			}
 			System.out.println();
 		}
@@ -61,12 +59,12 @@ public class AFN {
 		}
 	}
 	
-	public Vector<Integer> calcularEdo0(AFNeOLD afne){
+	public Vector<Integer> calcularEdo0(AFNe afne){
 		Vector<Integer> edoInicial = clausura(afne, afne.getInicial());;
 		return edoInicial;
 	}
 	
-	public Vector<Integer> clausura(AFNeOLD afne, Integer estado){
+	public Vector<Integer> clausura(AFNe afne, Integer estado){
 		Vector<Integer> respuesta = new Vector<Integer>();
 		if(afne.automata.elementAt(estado).elementAt(0).size() == 0){
 			respuesta.add(estado);
@@ -91,7 +89,7 @@ public class AFN {
 		return a;
 	}
 	
-	public Vector<Integer> adondeva(AFNeOLD afne, Vector<Integer> estado, char simbolo){
+	public Vector<Integer> adondeva(AFNe afne, Vector<Integer> estado, char simbolo){
 		int posicion = afne.posCaracter(simbolo);
 		Vector<Integer> respuesta = new Vector<Integer>();
 		Integer estadotmp;
@@ -129,7 +127,7 @@ public class AFN {
 		return true;
 	}
 	
-	public void calculaTransiciones(Vector<Integer> estado, AFNeOLD afne){
+	public void calculaTransiciones(Vector<Integer> estado, AFNe afne){
 		int estadoActual = this.existeEstado(estado);
 		int estadoTransicion;
 		
@@ -137,6 +135,9 @@ public class AFN {
 		Vector<Integer> transicion;
 		this.automata.elementAt(estadoActual)[0] = -1;
 		for (int i = 1; i < afne.lenguaje.length; i++) {
+			if(i == 15){
+				System.out.println("simbolo aqui = "+afne.lenguaje[i]);
+			}
 			transicion = this.adondeva(afne, estado, afne.lenguaje[i]);
 			vec.add(transicion);
 			if(transicion.size() > 0){
@@ -153,7 +154,7 @@ public class AFN {
 		}
 	}
 	
-	public void calcularTabla(AFNeOLD afne){
+	public void calcularTabla(AFNe afne){
 		int estadosSize = this.estadostmp.size();
 		int contador = 0;
 		while(contador<estadosSize){
@@ -182,23 +183,6 @@ public class AFN {
 	}
 	
 	public void depurarAutomata(){
-		int max = 0;
-		int maxtmp = 0;
-		for(int i=0; i<this.automata.size(); i++){
-			maxtmp = 0;
-			for(int j=0; j<this.lenguaje.length;j++){
-				if(this.automata.elementAt(i)[j] != -1) maxtmp++;
-			}
-			if(maxtmp>max) max = maxtmp;
-		}
-		
-		this.AFN = new int[this.automata.size()][max];
-		for (int i = 0; i < this.AFN.length; i++) {
-			for (int j = 0; j < this.AFN[0].length; j++) {
-				this.AFN[i][j] = -1;
-			}
-		}
-		
 		this.alfabetoTmp = new Vector<Character>();
 		
 		for(int i=0; i<this.automata.size(); i++){
@@ -208,7 +192,17 @@ public class AFN {
 				}
 			}
 		}
-		this.alfabeto = new char[max];
+		
+		
+		this.AFN = new int[this.automata.size()][this.alfabetoTmp.size()];
+		for (int i = 0; i < this.AFN.length; i++) {
+			for (int j = 0; j < this.AFN[0].length; j++) {
+				this.AFN[i][j] = -1;
+			}
+		}
+		
+		
+		this.alfabeto = new char[this.alfabetoTmp.size()];
 		for (int i = 0; i < this.alfabeto.length; i++) {
 			this.alfabeto[i] = this.alfabetoTmp.elementAt(i);
 		}
@@ -217,19 +211,62 @@ public class AFN {
 		for(int i=0; i<this.automata.size(); i++){
 			for(int j=0; j<this.lenguaje.length;j++){
 				if(this.automata.elementAt(i)[j] != -1){
-					System.out.println(this.automata.elementAt(i)[j]);
+					if(i== 1 && j==14){
+						System.out.println("i ="+i);
+						System.out.println("j ="+j);
+					}
+					
 					this.AFN[i][posAlfabeto(this.lenguaje[j])] = this.automata.elementAt(i)[j];
 				}
 			}
 		}
 	}
 	
-	public static void main(String[] args) throws ExpresionPosfijaException {
-		ConvertidorPosfijo posfijo = new ConvertidorPosfijo();
-		AFNeOLD e = new AFNeOLD(posfijo.convertir("(ab,cd)"));
-		e.imprimirAFNe();
-		AFN automata = new AFN(e);
-		automata.imprimirAutomata();
+	public int resolverCadena(String cadena, int state){
+		int estado;
+		String subcadena;
+		if(state == -1) return -1;
+		if(cadena.length()<1) return -1;
+		int posAlfabeto = this.posAlfabeto(cadena.charAt(0));
+		if(posAlfabeto == -1) return -1;
+		estado = this.AFN[state][posAlfabeto];
+		if(cadena.length()>1){
+			subcadena = cadena.substring(1);
+			return resolverCadena(subcadena, estado);
+		}
+		else return estado;
+	}
+	
+	public boolean aceptado(int estado){
+		if(estado == -1) return false;
+		Vector<Integer> edo = this.estadostmp.elementAt(estado);
+		return edo.contains(this.estadoFinal);
+	}
+	
+	public static void main(String[] args) {
+		//AFNe e = new AFNe();
+		//AFN automata = new AFN(e);
+		//automata.imprimirAFN();
+		//System.out.println(automata.aceptado(automata.resolverCadena("bb", 0)));
+		//automata.imprimirEstados();
+		//automata.imprimirAutomata();
+		
+		
+		try {
+			ConvertidorPosfijo convertidor = new ConvertidorPosfijo("(arbol,casa)+gato");
+			AFNe afne = new AFNe(convertidor.getPosfijo());
+			afne.imprimirAFNe();
+			
+			AFN afn = new AFN(afne);
+			afn.imprimirAFN();
+			System.out.println(afn.aceptado(afn.resolverCadena("gato", 0)));
+			
+			
+			
+		} catch (ExpresionPosfijaException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 	}
 
