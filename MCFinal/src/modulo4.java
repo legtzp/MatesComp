@@ -19,24 +19,35 @@ public class modulo4 {
 	
 	private void leer(AFN automata, String archivo) throws IOException{ //Enceuntra las cadenas aceptadas por la expresion regulas y las guarda
 		
-		String linea;
+		String linea, sublinea;
 		BufferedReader lector =  new BufferedReader(new FileReader(archivo));
 		
-		while((linea = lector.readLine()) != null){
-			
+		while((linea = lector.readLine()) != null){ //Lee cada linea individual
+			for(int i = 0; i < linea.length();i++){ //Crea todas las subcadenas posibles de la linea y prueba si son aceptadas por el automata
+				for(int j = 0; j < linea.length(); j++){
+					sublinea = linea.substring(j, i);
+					if(automata.aceptado(automata.resolverCadena(sublinea, 0))){
+						this.cadenasAceptadas.add(sublinea);
+					}
+				}
+			}
 		}
 		
 	}
 	
 	
 	
-	public String toString(){
+	public String toString(){ //Override del metodo substring que imprime todas las cadenas
 		String string = "";
 		for(int i = 0; i < this.cadenasAceptadas.size(); i++){
 			string.concat(this.cadenasAceptadas.elementAt(i)+"\n");
 		}
 		
 		return string;
+		
+	}
+	
+	public static void main(String[] args){
 		
 	}
 	
