@@ -59,10 +59,10 @@ public class modulo4 {
 	}
 	
 	public static void main(String[] args) throws ExpresionPosfijaException, IOException{
-		String expresion = "DHL(.)*\n";
+		String expresion = "(A,B,C,D)(.)*ui(.)+(ε,regex)(.)*(\n,3)";
 		String archivo = "evaluacion1.txt";
 		
-		expresion = JOptionPane.showInputDialog("Escriba la expresion regular");
+		//expresion = JOptionPane.showInputDialog("Escriba la expresion regular");
 		
 		ConvertidorPosfijo posfijo = new ConvertidorPosfijo(expresion);
 		AFNe afne = new AFNe(posfijo.getPosfijo());

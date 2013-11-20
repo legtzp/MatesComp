@@ -1,0 +1,20 @@
+El programa siguiente recibe una expresión regular y despues un archivo de texto
+para calcular que cadenas de este texto deben ser aceptadas según esta expresión
+regular, hay diferentes operadores para estas ER's:
+
++ : esta es una cerradura positiva y denota 1 o más
+* : este asterisco denota que puede haber 0 o más caracteres
+(): parentesis, sirven para agrupar caracteres y aplicarles operadores
+. : representa cualquier caracter
+, : significa unión, conocido como OR
+
+Por ejemplo si queremos dar una expresión regular que acepte la palabra gato o 
+la palabra perro, seguida por la letra a 1 o más veces, la expresión sería la si
+-guiente:
+
+(gato,perro)a+
+
+Si se quiere una expresión que reciba solo a's o solo b's o una cadena vacía, se
+-ría la siguiente:
+
+(a,b)*
