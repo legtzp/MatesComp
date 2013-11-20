@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
+
 
 public class modulo4 {
 
@@ -57,11 +59,15 @@ public class modulo4 {
 	}
 	
 	public static void main(String[] args) throws ExpresionPosfijaException, IOException{
+		String expresion = "DHL(.)*\n";
+		String archivo = "evaluacion1.txt";
 		
-		ConvertidorPosfijo posfijo = new ConvertidorPosfijo("S(.)*\n");
+		expresion = JOptionPane.showInputDialog("Escriba la expresion regular");
+		
+		ConvertidorPosfijo posfijo = new ConvertidorPosfijo(expresion);
 		AFNe afne = new AFNe(posfijo.getPosfijo());
 		AFN afn = new AFN(afne);
-		modulo4 prueba = new modulo4(afn,"prueba3.txt");
+		modulo4 prueba = new modulo4(afn,archivo);
 		System.out.println(prueba);
 		
 	}

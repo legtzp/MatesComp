@@ -15,7 +15,7 @@ public class AFNe {
 	
 	Vector<Vector<Vector<Integer>>> automata; //Orden: Estados - SimboloEntrada - EstadosPosibles
 	
-	public AFNe(String posfijo){
+	public AFNe(String posfijo){ //Constructor que recibe una expresion posfija
 		
 		this.automata = new Vector<Vector<Vector<Integer>>>();
 		this.inicial = 0;
@@ -34,11 +34,11 @@ public class AFNe {
 		return -1;
 	}
 	
-	private char caracterAt(int pos){
+	private char caracterAt(int pos){ //Obtiene la posicion de un caracter dado en el arreglo del lenguaje
 		return this.lenguaje[pos];
 	}
 	
-	private boolean esOperador(char simbolo){
+	private boolean esOperador(char simbolo){//Regresa true si es un operador valido, de lo contrario regresa false
 		
 		if(simbolo == '+' || simbolo == '*' || simbolo == ',' ||simbolo == '#'){
 			return true;
@@ -80,7 +80,7 @@ public class AFNe {
 		
 	}
 	
-	private int getInicial2(Vector<Vector<Boolean>> inicialFinal){
+	private int getInicial2(Vector<Vector<Boolean>> inicialFinal){//Obtiene el estado inicial del segundo automata a operar
 		for(int i= inicialFinal.size() -1; i>=0; i--){ //Busca cual es el inicial del segundo automata
 			if(inicialFinal.elementAt(i).elementAt(0) == true){
 				return i;
@@ -90,7 +90,7 @@ public class AFNe {
 		return -1;
 	}
 	
-	private int getInicial1(Vector<Vector<Boolean>> inicialFinal, int inicial2){
+	private int getInicial1(Vector<Vector<Boolean>> inicialFinal, int inicial2){//Obtiene el estado inicial del primer automata a operar
 		for(int i= inicial2; i>=0; i--){ //Busca cual es el inicial del primer automata
 			if(inicialFinal.elementAt(i).elementAt(0) == true && i != inicial2){
 				return i;
@@ -100,7 +100,7 @@ public class AFNe {
 		return -1;
 	}
 	
-	private int getFinal2(Vector<Vector<Boolean>> inicialFinal){
+	private int getFinal2(Vector<Vector<Boolean>> inicialFinal){ //Obtiene el estado final del segundo automata a operar
 		for(int i= inicialFinal.size()-1; i>0; i--){ //Busca cual es el final del segundo automata
 			if(inicialFinal.elementAt(i).elementAt(1) == true){
 				return i;
@@ -111,7 +111,7 @@ public class AFNe {
 		return -1;
 	}
 	
-	private int getFinal1(Vector<Vector<Boolean>> inicialFinal, int final2){
+	private int getFinal1(Vector<Vector<Boolean>> inicialFinal, int final2){ //Obtiene el estado final del primer automata a operar
 		for(int i= final2; i>0; i--){ //Busca cual es el inicial del segundo automata
 			if(inicialFinal.elementAt(i).elementAt(1) == true && i != final2){
 				return i;
@@ -122,7 +122,7 @@ public class AFNe {
 		return -1;
 	}
 	
-	private void concatenar(Vector<Vector<Boolean>> inicialFinal){
+	private void concatenar(Vector<Vector<Boolean>> inicialFinal){//Concatena los ultimos dos automatas
 		Integer inicial1, inicial2, final1, final2;
 		inicial1 = inicial2 = final1 = final2 = 0;
 		
@@ -137,7 +137,7 @@ public class AFNe {
 		
 	}
 	
-	private void union(Vector<Vector<Boolean>> inicialFinal){
+	private void union(Vector<Vector<Boolean>> inicialFinal){//Une los ultimos dos automatas
 		Integer inicial1, inicial2, final1, final2;
 		inicial1 = inicial2 = final1 = final2 = 0;
 		
@@ -166,7 +166,7 @@ public class AFNe {
 		
 	}
 	
-	private void cerraduraEstrella(Vector<Vector<Boolean>> inicialFinal){
+	private void cerraduraEstrella(Vector<Vector<Boolean>> inicialFinal){ //Cerradura estrella en el ultimo automata
 		int inicial, eFinal;
 		
 		inicial = this.getInicial2(inicialFinal);
@@ -189,7 +189,7 @@ public class AFNe {
 		
 	}
 	
-	private void cerraduraPositiva(Vector<Vector<Boolean>> inicialFinal){
+	private void cerraduraPositiva(Vector<Vector<Boolean>> inicialFinal){ //Cerradura positiva en el ultimo automata
 		int inicial, eFinal;
 		
 		inicial = this.getInicial2(inicialFinal);
@@ -224,29 +224,29 @@ public class AFNe {
 				this.automata.add(crearEstados());
 				inicialFinal.add(this.crearFinal());
 				
-				if(simbolo == '.'){ 
+				if(simbolo == '.'){ //Comodin, crea transciones para todos los caracteres
 					for(int j = 2; j < this.lenguaje.length; j++){
 						this.automata.elementAt(nEstado).elementAt(j).add((Integer)nEstado+1);
 					}
 				}
-				else{
+				else{ //Transicion solo para el caracter dado
 					this.automata.elementAt(nEstado).elementAt(this.posCaracter(simbolo)).add((Integer)nEstado+1);
 				}
 				
 				nEstado = nEstado+2;
 				
 			}
-			else{ //Aplicar operaciones
-				if(simbolo == '#'){
+			else{ //Aplicar operaciones 
+				if(simbolo == '#'){ //Concatenacion
 					this.concatenar(inicialFinal);
 				}
-				else if(simbolo == ','){
+				else if(simbolo == ','){ //Union
 					this.union(inicialFinal);
 				}
-				else if(simbolo == '*'){
+				else if(simbolo == '*'){ //Cerradura estrella
 					this.cerraduraEstrella(inicialFinal);
 				}
-				else if(simbolo == '+'){
+				else if(simbolo == '+'){ //Cerradura positiva
 					this.cerraduraPositiva(inicialFinal);
 				}
 			}
@@ -268,7 +268,7 @@ public class AFNe {
 		}
 	}
 
-	public void imprimirAFNe(){
+	public void imprimirAFNe(){ //Impresion de la AFN por estados
 		
 		System.out.println("Numero de Estados: "+automata.size());
 		System.out.println("Estado inicial: q"+this.inicial+" Estado Final: q"+this.estadoFinal);
@@ -293,11 +293,11 @@ public class AFNe {
 
 	
 	//getters
-	public int getInicial(){
+	public int getInicial(){//Devuelve el estado inicial
 		return this.inicial;
 	}
 	
-	public int getFinal(){
+	public int getFinal(){//devuelve el estado inicial
 		return this.estadoFinal;
 	}
 	
@@ -305,7 +305,7 @@ public class AFNe {
 		return this.automata;
 	}
 	
-	public int numeroEstados(){
+	public int numeroEstados(){ //Devuelve el numero de estados en el automata
 		return this.nEstado + 1;
 	}
 	
