@@ -1,4 +1,4 @@
 MatesComp
 =========
 
-AFN &amp; shit
+AFN
